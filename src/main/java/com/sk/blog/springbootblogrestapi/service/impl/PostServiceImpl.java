@@ -4,6 +4,7 @@
 package com.sk.blog.springbootblogrestapi.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
@@ -54,7 +55,13 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public PostDto getPostById(Long id) {
-		return null;
+		Optional<Post> opPost = postRepository.findById(id);
+		PostDto postDto = new PostDto();
+		if(opPost.isPresent()) {
+			Post post = opPost.get();
+			BeanUtils.copyProperties(post, postDto);
+		}
+		return postDto;
 	}
 
 }
