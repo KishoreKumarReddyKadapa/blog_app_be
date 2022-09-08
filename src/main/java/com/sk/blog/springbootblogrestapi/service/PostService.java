@@ -14,7 +14,9 @@ import com.sk.blog.springbootblogrestapi.payload.PostDto;
 public interface PostService {
 	
 	PostDto createPost(PostDto postDto);
-	List<PostDto> getAllPosts();
+	List<PostDto> getAllPosts(int pageNo,int pageSize);
 	PostDto getPostById(Long id);
+	PostDto updatePostById(PostDto postDto, Long id);
+	void deletePostById(Long id);
 
 }

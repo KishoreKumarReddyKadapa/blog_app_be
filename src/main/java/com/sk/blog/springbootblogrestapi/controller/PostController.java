@@ -7,11 +7,14 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sk.blog.springbootblogrestapi.payload.PostDto;
@@ -37,12 +40,24 @@ public class PostController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<PostDto>> getAllPosts(){
-		return new ResponseEntity<>(postService.getAllPosts(), HttpStatus.OK);
+	public ResponseEntity<List<PostDto>> getAllPosts(
+			@RequestParam(value="pageNo", defaultValue="0", required=false) int pageNo,
+			@RequestParam(value="pageSize", defaultValue="10", required=false) int pageSize){
+		return new ResponseEntity<>(postService.getAllPosts(pageNo,pageSize), HttpStatus.OK);
 	}
 	@GetMapping(value="/{id}")
-	public ResponseEntity<PostDto> getPostById(@PathVariable Long id){
+	public ResponseEntity<PostDto> getPostById(@PathVariable(name="id") Long id){
 		return new ResponseEntity<>(postService.getPostById(id), HttpStatus.OK);
+	}
+	
+	@PutMapping(value="/{id}")
+	public ResponseEntity<PostDto> updatePostById(@RequestBody  PostDto postDto,@PathVariable(name="id") Long id){
+		return new ResponseEntity<>(postService.updatePostById(postDto, id), HttpStatus.OK);
+	}
+	@DeleteMapping(value="/{id}")
+	public ResponseEntity<String> deletePostById(@PathVariable(name="id") Long id){
+		postService.deletePostById(id);
+		return new ResponseEntity<>(String.format("Post Deleted Successfully...with post id: %s",id), HttpStatus.OK);
 	}
 	
 }
