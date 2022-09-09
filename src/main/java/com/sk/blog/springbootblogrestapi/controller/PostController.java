@@ -3,8 +3,6 @@
  */
 package com.sk.blog.springbootblogrestapi.controller;
 
-import java.util.List;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sk.blog.springbootblogrestapi.payload.PostDto;
+import com.sk.blog.springbootblogrestapi.payload.PostResponse;
 import com.sk.blog.springbootblogrestapi.service.PostService;
+import com.sk.blog.springbootblogrestapi.utils.AppConstants;
 
 /**
  * @author kishore.kumarreddy
@@ -40,10 +40,12 @@ public class PostController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<PostDto>> getAllPosts(
-			@RequestParam(value="pageNo", defaultValue="0", required=false) int pageNo,
-			@RequestParam(value="pageSize", defaultValue="10", required=false) int pageSize){
-		return new ResponseEntity<>(postService.getAllPosts(pageNo,pageSize), HttpStatus.OK);
+	public ResponseEntity<PostResponse> getAllPosts(
+			@RequestParam(value="pageNo", defaultValue=AppConstants.DEFAULT_PAGE_NUMBER, required=false) int pageNo,
+			@RequestParam(value="pageSize", defaultValue=AppConstants.DEFAULT_PAGE_SIZE, required=false) int pageSize,
+			@RequestParam(value="sortBy", defaultValue=AppConstants.DEFAULT_SORT_BY, required=false) String sortBy,
+			@RequestParam(value="sortDir", defaultValue=AppConstants.DEFAULT_SORT_DIRECTION, required=false) String sortDir){
+		return new ResponseEntity<>(postService.getAllPosts(pageNo,pageSize,sortBy,sortDir), HttpStatus.OK);
 	}
 	@GetMapping(value="/{id}")
 	public ResponseEntity<PostDto> getPostById(@PathVariable(name="id") Long id){
