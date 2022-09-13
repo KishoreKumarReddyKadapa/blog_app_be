@@ -7,6 +7,8 @@ import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,6 +38,7 @@ public class PostController {
 		this.postService = postService;
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping
 	public ResponseEntity<PostDto> createPost(@Valid @RequestBody PostDto postDto){
 		return new ResponseEntity<PostDto>(postService.createPost(postDto), HttpStatus.CREATED);
@@ -54,6 +57,7 @@ public class PostController {
 		return new ResponseEntity<>(postService.getPostById(id), HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping(value="/{id}")
 	public ResponseEntity<PostDto> updatePostById(@Valid @RequestBody  PostDto postDto,@PathVariable(name="id") Long id){
 		return new ResponseEntity<>(postService.updatePostById(postDto, id), HttpStatus.OK);
