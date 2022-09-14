@@ -3,9 +3,8 @@
  */
 package com.sk.blog.springbootblogrestapi.service;
 
-import java.util.List;
-
 import com.sk.blog.springbootblogrestapi.payload.PostDto;
+import com.sk.blog.springbootblogrestapi.payload.PostResponse;
 
 /**
  * @author kishore.kumarreddy
@@ -14,7 +13,9 @@ import com.sk.blog.springbootblogrestapi.payload.PostDto;
 public interface PostService {
 	
 	PostDto createPost(PostDto postDto);
-	List<PostDto> getAllPosts();
+	PostResponse getAllPosts(int pageNo,int pageSize,String sortBy, String sortDir);
 	PostDto getPostById(Long id);
+	PostDto updatePostById(PostDto postDto, Long id);
+	void deletePostById(Long id);
 
 }
